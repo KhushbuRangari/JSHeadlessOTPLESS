@@ -65,25 +65,29 @@
     // Initialize OTPLESS SDK with the callback
     const OTPlessSignin = new OTPless(callback);
 
-    // Function to initiate phone-based authentication
-    const phoneAuth = () => {
-      const mobileNumber = document.getElementById("mobile-input").value;
-      if (!mobileNumber) {
-        alert("Please enter your mobile number");
-        return;
-      }
+   const phoneAuth = () => {
+  const mobileNumber = document.getElementById("mobile-input").value;
+  console.log("PhoneAuth Function Called, Mobile Number: ", mobileNumber); // Check if the mobile number is captured correctly
 
-      // Show OTP input section
-      document.getElementById("otp-section").style.display = "block";
-       console.log("in phoneauth",mobileNumber);
-      
-      // Initiate phone authentication
-      OTPlessSignin.initiate({
-        channel: "PHONE",
-        phone: mobileNumber,
-        countryCode: "+91", // Change to the relevant country code
-      });
-    };
+  if (!mobileNumber) {
+    alert("Please enter your mobile number");
+    return;
+  }
+
+  // Show OTP input section
+  document.getElementById("otp-section").style.display = "block";
+
+  // Initiate phone authentication
+  OTPlessSignin.initiate({
+    channel: "PHONE",
+    phone: mobileNumber,
+    countryCode: "+91", // Change to the relevant country code
+  }).then(response => {
+    console.log("OTP Initiated: ", response);  // Log the response from OTP initiation
+  }).catch(error => {
+    console.error("Error initiating OTP: ", error); // Log any errors
+  });
+};
 
     // Function to verify OTP
     const verifyOTP = () => {
