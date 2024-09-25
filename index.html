@@ -68,50 +68,23 @@
 
 console.log(OTPlessSignin ? "OTPlessSignin initialized successfully" : "Failed to initialize OTPlessSignin");
 
-   const phoneAuth = () => {
-  const mobileNumber = document.getElementById("mobile-input").value;
-  console.log("PhoneAuth Function Called, Mobile Number: ", mobileNumber); // Check if the mobile number is captured correctly
-
-  if (!mobileNumber) {
-    alert("Please enter your mobile number");
-    return;
-  }
-
-  // Show OTP input section
-  document.getElementById("otp-section").style.display = "block";
-
-  // Initiate phone authentication
+  const phoneAuth = () => {
   OTPlessSignin.initiate({
     channel: "PHONE",
-    phone: mobileNumber,
-    countryCode: "+91", // Change to the relevant country code
-  }).then(response => {
-    console.log("OTP Initiated: ", response);  // Log the response from OTP initiation
-  }).catch(error => {
-    console.error("Error initiating OTP: ", error); // Log any errors
+    phone: "9167442741",
+    countryCode: "+91",
   });
 };
 
-    // Function to verify OTP
-    const verifyOTP = () => {
-      const mobileNumber = document.getElementById("mobile-input").value;
-      console.log("verifyOTP Mobile Number",mobileNumber);
-      
-      const otp = document.getElementById("otp-input").value;
 
-      if (!otp) {
-        alert("Please enter the OTP");
-        return;
-      }
-
-      // Verify the OTP entered by the user
-      OTPlessSignin.verify({
-        channel: "PHONE",
-        phone: mobileNumber,
-        otp: otp,
-        countryCode: "+91", // Change to the relevant country code
-      });
-    };
+  const verifyOTP = () => {
+OTPlessSignin.verify({
+  channel: "PHONE",
+  phone: "9167442741",
+  otp: "123456",
+  countryCode: "+91",
+});
+};
 
     // Function to handle OAuth login (e.g., WhatsApp, Gmail)
     const oauth = (provider) => {
