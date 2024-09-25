@@ -16,13 +16,13 @@
   <!-- User Information Fields -->
   <div>
     <input id="first-name" placeholder="First Name" />
-    <input id="last-name" placeholder="Last Name" />
-    <input id="birthdate" type="date" placeholder="Birthdate" />
-    <input id="city" placeholder="City" />
+    <input id="last-name" placeholder="Last Name" /> <br>
+    <input id="birthdate" type="date" placeholder="Birthdate" /><br>
+    <input id="city" placeholder="City" /><br>
     <input id="mobile-input" placeholder="Enter mobile number" />
     <button onclick="phoneAuth()">Request OTP</button>
   </div>
-
+<br>
   <!-- OTP Section -->
   <div id="otp-section" style="display: none;">
     <input id="otp-input" placeholder="Enter OTP" />
@@ -30,25 +30,25 @@
   </div>
 
   <!-- OAuth Buttons -->
-  <button onclick="oauth('WHATSAPP')">Continue with WhatsApp</button>
+  <!-- <button onclick="oauth('WHATSAPP')">Continue with WhatsApp</button>
   <button onclick="oauth('GMAIL')">Continue with Gmail</button>
-  
+   -->
   <!-- Add more buttons for different OAuth providers as needed -->
 
   <script>
     const callback = (userinfo) => {
-      const emailMap = userinfo.identities.find(
-        (item) => item.identityType === "EMAIL"
-      );
+      // const emailMap = userinfo.identities.find(
+      //   (item) => item.identityType === "EMAIL"
+      // );
 
       const mobileMap = userinfo.identities.find(
         (item) => item.identityType === "MOBILE"
       )?.identityValue;
 
       const token = userinfo.token;
-      const email = emailMap?.identityValue;
+      // const email = emailMap?.identityValue;
       const mobile = mobileMap?.identityValue;
-      const name = emailMap?.name || mobileMap?.name;
+      const name =  mobileMap?.name;
 
       console.log("User Info:", userinfo);
       console.log("First Name:", document.getElementById("first-name").value);
@@ -72,7 +72,8 @@
 
       // Show OTP input section
       document.getElementById("otp-section").style.display = "block";
-
+      console.log("in phoneauth");
+      
       // Initiate phone authentication
       OTPlessSignin.initiate({
         channel: "PHONE",
@@ -84,6 +85,8 @@
     // Function to verify OTP
     const verifyOTP = () => {
       const mobileNumber = document.getElementById("mobile-input").value;
+      console.log("verifyOTP Mobile Number",mobileNumber);
+      
       const otp = document.getElementById("otp-input").value;
 
       if (!otp) {
