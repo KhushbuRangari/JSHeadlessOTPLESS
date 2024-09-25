@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OTPLess Integration</title>
+  <script
+    id="otpless-sdk"
+    src="https://otpless.com/v3/headless.js"
+    data-appid="LQY1XXELF97QAQTOY251"
+  ></script>
+</head>
+<body>
+  <h1>OTPLess Authentication</h1>
+
+  <!-- User Information Fields -->
+  <div>
+    <input id="first-name" placeholder="First Name" />
+    <input id="last-name" placeholder="Last Name" />
+    <input id="birthdate" type="date" placeholder="Birthdate" />
+    <input id="city" placeholder="City" />
+    <input id="mobile-input" placeholder="Enter mobile number" />
+    <button onclick="phoneAuth()">Request OTP</button>
+  </div>
+
+  <!-- OTP Section -->
+  <div id="otp-section" style="display: none;">
+    <input id="otp-input" placeholder="Enter OTP" />
+    <button onclick="verifyOTP()">Verify OTP</button>
+  </div>
+
+  <!-- OAuth Buttons -->
+  <button onclick="oauth('WHATSAPP')">Continue with WhatsApp</button>
+  <button onclick="oauth('GMAIL')">Continue with Gmail</button>
+  
+  <!-- Add more buttons for different OAuth providers as needed -->
+
+  <script>
+    const callback = (userinfo) => {
+      const emailMap = userinfo.identities.find(
+        (item) => item.identityType === "EMAIL"
+      );
+
+      const mobileMap = userinfo.identities.find(
+        (item) => item.identityType === "MOBILE"
+      )?.identityValue;
+
+      const token = userinfo.token;
+      const email = emailMap?.identityValue;
+      const mobile = mobileMap?.identityValue;
+      const name = emailMap?.name || mobileMap?.name;
+
+      console.log("User Info:", userinfo);
+      console.log("First Name:", document.getElementById("first-name").value);
+      console.log("Last Name:", document.getElementById("last-name").value);
+      console.log("Birthdate:", document.getElementById("birthdate").value);
+      console.log("City:", document.getElementById("city").value);
+
+      // Implement your custom logic here.
+    };
+
+    // Initialize OTPLESS SDK with the callback
+    const OTPlessSignin = new OTPless(callback);
+
+    // Function to initiate phone-based authentication
+    const phoneAuth = () => {
+      const mobileNumber = document.getElementById("mobile-input").value;
+      if (!mobileNumber) {
+        alert("Please enter your mobile number");
+        return;
+      }
+
+      // Show OTP input section
+      document.getElementById("otp-section").style.display = "block";
+
+      // Initiate phone authentication
+      OTPlessSignin.initiate({
+        channel: "PHONE",
+        phone: mobileNumber,
+        countryCode: "+91", // Change to the relevant country code
+      });
+    };
+
+    // Function to verify OTP
+    const verifyOTP = () => {
+      const mobileNumber = document.getElementById("mobile-input").value;
+      const otp = document.getElementById("otp-input").value;
+
+      if (!otp) {
+        alert("Please enter the OTP");
+        return;
+      }
+
+      // Verify the OTP entered by the user
+      OTPlessSignin.verify({
+        channel: "PHONE",
+        phone: mobileNumber,
+        otp: otp,
+        countryCode: "+91", // Change to the relevant country code
+      });
+    };
+
+    // Function to handle OAuth login (e.g., WhatsApp, Gmail)
+    const oauth = (provider) => {
+      OTPlessSignin.initiate({
+        channel: "OAUTH",
+        channelType: provider, // 'WHATSAPP', 'GMAIL', etc.
+      });
+    };
+  </script>
+</body>
+</html>
