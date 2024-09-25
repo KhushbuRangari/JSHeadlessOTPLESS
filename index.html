@@ -64,6 +64,11 @@
 
     // Initialize OTPLESS SDK with the callback
     const OTPlessSignin = new OTPless(callback);
+const OTPlessSignin = new OTPless((userinfo) => {
+  console.log("OTPless callback triggered", userinfo);
+});
+
+console.log(OTPlessSignin ? "OTPlessSignin initialized successfully" : "Failed to initialize OTPlessSignin");
 
    const phoneAuth = () => {
   const mobileNumber = document.getElementById("mobile-input").value;
