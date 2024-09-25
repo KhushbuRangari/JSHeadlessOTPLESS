@@ -69,19 +69,24 @@
 console.log(OTPlessSignin ? "OTPlessSignin initialized successfully" : "Failed to initialize OTPlessSignin");
 
   const phoneAuth = () => {
+
+      const mobileNumber = document.getElementById("mobile-input").value;
   OTPlessSignin.initiate({
     channel: "PHONE",
-    phone: "9167442741",
+    phone: mobileNumber,
     countryCode: "+91",
   });
 };
 
 
   const verifyOTP = () => {
+
+      const mobileNumber = document.getElementById("mobile-input").value;
+      const otp = document.getElementById("otp-input").value;
 OTPlessSignin.verify({
   channel: "PHONE",
-  phone: "9167442741",
-  otp: "123456",
+  phone: mobileNumber,
+  otp: otp,
   countryCode: "+91",
 });
 };
